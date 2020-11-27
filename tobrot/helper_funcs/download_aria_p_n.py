@@ -447,18 +447,18 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
                 except:
                     pass
                 #
-                msg = f"\n<b>Downloading :</b>『{file.progress_string()} 』    `{downloading_dir_name}`"
-                msg += f"\n<b>Speed</b>: {file.download_speed_string()} 🔽 / {file.upload_speed_string()} 🔼"
-                msg += f"\n<b>Total Size</b>: {file.total_length_string()}"
+                msg = f"\n<b>○ File: </b> `{downloading_dir_name}`"
+                msg += f"\n<b>○ Speed: {file.download_speed_string()} 🌝|| {file.upload_speed_string()} 🌚</b>"
+                msg += f"\n<b>○ Progress:⧼⧼{file.progress_string()}⧽⧽ of ⧼⧼{file.total_length_string()}⧽⧽</b>"
 
                 if is_file is None :
-                   msg += f"\n<b>Connections :</b> {file.connections}"
+                   msg += f"\n<b>○ Connections : {file.connections}</b>"
                 else :
-                   msg += f"\n<b>Info:</b>[ P : ,<code>{file.connections} || S : {file.num_seeders} ]</code>"
+                   msg += f"\n<b>○Info : P : <code>{file.connections} || S : {file.num_seeders} ]</code>"
 
-                msg += f"\n<b>Status:</b> {file.status}"
-                msg += f"\n<b>Time Left :</b> {file.eta_string()}"
-                msg += f"\n© @FILMYFLX | @THUGLIFEBOTS"
+                msg += f"\n<b>○ Status: {file.status}</b>"
+                msg += f"\n<b>○ ETA : {file.eta_string()}</b>"
+                msg += f"\n\n<b>📨 Powered By :- @MeGCloud</b>"
                 inline_keyboard = []
                 ikeyboard = []
                 ikeyboard.append(InlineKeyboardButton("❌ Cancel ❌", callback_data=(f"cancel {gid}").encode("UTF-8")))
