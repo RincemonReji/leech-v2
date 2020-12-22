@@ -5,7 +5,7 @@
 # the logging things
 import logging
 import sys
-sys.setrecursionlimit(10**6)
+sys.setrecursionlimit(10**4)
 logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -31,7 +31,7 @@ from tobrot import (
     CUSTOM_FILE_NAME
 )
 from pyrogram.errors import MessageNotModified
-from pyrogram.types import (
+from pyrogram import (
 	InlineKeyboardButton,
 	InlineKeyboardMarkup,
 	Message
@@ -57,7 +57,7 @@ async def aria_start():
     aria2_daemon_start_cmd.append("--seed-time=1")
     aria2_daemon_start_cmd.append("--max-overall-upload-limit=1K")
     aria2_daemon_start_cmd.append("--split=10")
-    #aria2_daemon_start_cmd.append(f"--bt-stop-timeout={MAX_TIME_TO_WAIT_FOR_TORRENTS_TO_START}")
+    aria2_daemon_start_cmd.append(f"--bt-stop-timeout={MAX_TIME_TO_WAIT_FOR_TORRENTS_TO_START}")
     #
     LOGGER.info(aria2_daemon_start_cmd)
     #
@@ -237,7 +237,7 @@ async def call_apropriate_function(
             message_id = final_response[key_f_res_se]
             channel_id = str(sent_message_to_update_tg_p.chat.id)[4:]
             private_link = f"https://t.me/c/{channel_id}/{message_id}"
-            message_to_send += "👉 <a href='"
+            message_to_send += "📂 <a href='"
             message_to_send += private_link
             message_to_send += "'>"
             message_to_send += local_file_name
@@ -246,7 +246,7 @@ async def call_apropriate_function(
         if message_to_send != "":
             mention_req_user = f"<a href='tg://user?id={user_id}'>Your Requested Files</a>\n\n"
             message_to_send = mention_req_user + message_to_send
-            message_to_send = message_to_send + "\n\n" + "#uploads"
+            message_to_send = message_to_send + "\n\n" + "#uploads ©️ @FIMYFLX"
         else:
             message_to_send = "<i>FAILED</i> to upload files. 😞😞"
         await user_message.reply_text(
@@ -430,6 +430,7 @@ async def call_apropriate_function_t(
 
 # https://github.com/jaskaranSM/UniBorg/blob/6d35cf452bce1204613929d4da7530058785b6b1/stdplugins/aria.py#L136-L164
 async def check_progress_for_dl(aria2, gid, event, previous_message):
+    #g_id = event.reply_to_message.from_user.id
     try:
         file = aria2.get_download(gid)
         complete = file.is_complete
@@ -448,26 +449,21 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
                 except:
                     pass
                 #
+                msg = f"\n<b>○ File: </b> `{downloading_dir_name}`"
+                msg += f"\n<b>○ Speed: {file.download_speed_string()} 🌝|| {file.upload_speed_string()} 🌚</b>"
+                msg += f"\n<b>○ Progress:⧼⧼{file.progress_string()}⧽⧽ of ⧼⧼{file.total_length_string()}⧽⧽</b>"
+
                 if is_file is None :
-                   msgg = f"Conn: {file.connections} <b>|</b> GID: <code>{gid}</code>"
+                   msg += f"\n<b>○ Connections : {file.connections}</b>"
                 else :
-                   msgg = f"P: {file.connections} | S: {file.num_seeders} <b>|</b> GID: <code>{gid}</code>"
-                msg = f"\n`{downloading_dir_name}`"
-                msg += f"\n<b>Speed</b>: {file.download_speed_string()}"
-                msg += f"\n<b>Status</b>: {file.progress_string()} <b>of</b> {file.total_length_string()} <b>|</b> {file.eta_string()} <b>|</b> {msgg}"
-                #msg += f"\nSize: {file.total_length_string()}"
+                   msg += f"\n<b>○Info : P : <code>{file.connections} || S : {file.num_seeders} ]</code>"
 
-                #if is_file is None :
-                   #msg += f"\n<b>Conn:</b> {file.connections}, GID: <code>{gid}</code>"
-                #else :
-                   #msg += f"\n<b>Info:</b>[ P : {file.connections} | S : {file.num_seeders} ], GID: <code>{gid}</code>"
-
-                #msg += f"\nStatus: {file.status}"
-                #msg += f"\nETA: {file.eta_string()}"
-                #msg += f"\nGID: <code>{gid}</code>"
+                msg += f"\n<b>○ Status: {file.status}</b>"
+                msg += f"\n<b>○ ETA : {file.eta_string()}</b>"
+                msg += f"\n\n<b>📨 Powered By :- @MeGCloud</b>"
                 inline_keyboard = []
                 ikeyboard = []
-                ikeyboard.append(InlineKeyboardButton("Cancel 🚫", callback_data=(f"cancel {gid}").encode("UTF-8")))
+                ikeyboard.append(InlineKeyboardButton("❌ Cancel ❌", callback_data=(f"cancel {gid}").encode("UTF-8")))
                 inline_keyboard.append(ikeyboard)
                 reply_markup = InlineKeyboardMarkup(inline_keyboard)
                 #msg += reply_markup
@@ -484,7 +480,7 @@ async def check_progress_for_dl(aria2, gid, event, previous_message):
             await check_progress_for_dl(aria2, gid, event, previous_message)
         else:
             await asyncio.sleep(EDIT_SLEEP_TIME_OUT)
-            await event.edit(f"Downloaded Successfully: `{file.name}`")
+            await event.edit(f"Downloaded Successfully: `{file.name}` 🤒")
             return True
     except aria2p.client.ClientException:
         pass
